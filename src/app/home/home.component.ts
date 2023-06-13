@@ -1,15 +1,16 @@
 import { HousingService } from '../housing.service';
 import { Component, ElementRef, ViewChild, inject } from '@angular/core'; import { CommonModule } from '@angular/common';
 import { HousingLocationComponent } from '../housing-location/housing-location.component';
-import { HousingLocation } from '../housinglocation';
-import { User } from '../user';
+import { RouterLink, RouterOutlet } from '@angular/router';
 import { SpeechRecognitionService } from '../speech-recognition.service';
 @Component({
   selector: 'app-home',
   standalone: true,
   imports: [
     CommonModule,
-    HousingLocationComponent
+    HousingLocationComponent,
+    RouterLink,
+    RouterOutlet
   ],
   template: `
   <section>
@@ -18,7 +19,11 @@ import { SpeechRecognitionService } from '../speech-recognition.service';
     <button class="primary" type="button" (click)="filterResults(filter.value)">Search</button>
     <button class="primary" type="button" (click)="startService()">Speech Start</button>
     <button class="primary" type="button" (click)="stopService()">Speech Stop</button>
+    <a [routerLink] = "[ 'comments' ]" >
+      comments
+    </a>
     </form>
+    
   </section>
   <section class="results">
   <app-housing-location *ngFor="let housingUser of filteredUserList" [housingUser]="housingUser"></app-housing-location>

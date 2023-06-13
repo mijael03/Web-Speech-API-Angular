@@ -1,18 +1,23 @@
 import { Component } from '@angular/core';
+import { RouterModule } from '@angular/router';
 import { HomeComponent } from './home/home.component';
+import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
 @Component({
   selector: 'app-root',
   standalone: true,
   imports: [
     HomeComponent,
+    RouterModule,
   ],
   template: `
   <main>
-    <header class="brand-name">
-      <img class="brand-logo" src="/assets/logo.png" alt="logo" width="200" aria-hidden="true">
-    </header>
+    <a [routerLink]="['/']">
+      <header class="brand-name">
+        <img class="brand-logo" width="200" src="/assets/logo.png" alt="logo" aria-hidden="true">
+      </header>
+    </a>
     <section class="content">
-      <app-home></app-home>
+      <router-outlet></router-outlet>
     </section>
   </main>
 `,

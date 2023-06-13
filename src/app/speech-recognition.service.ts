@@ -20,29 +20,37 @@ export class SpeechRecognitionService {
     this.recognition.lang = 'es-PE';
     
     
-    this.recognition.addEventListener('result', (e:any) => {
+    // this.recognition.addEventListener('result', (e:any) => {
+    //   const transcript = Array.from(e.results)
+    //     .map((result: any) => result[0])
+    //     .map((result) => result.transcript)
+    //     .join('');
+    //   this.tempWords = transcript;
+    //   console.log(transcript);
+    // });
+    this.recognition.onresult = (e:any) => {
       const transcript = Array.from(e.results)
         .map((result: any) => result[0])
         .map((result) => result.transcript)
         .join('');
       this.tempWords = transcript;
       console.log(transcript);
-    });
+    }
   }
 
   start() {
     this.isStoppedSpeechRecog = false;
     this.recognition.start();
     console.log("Speech recognition started")
-    this.recognition.addEventListener('end', (condition:any) => {
-      if (this.isStoppedSpeechRecog) {
-        this.recognition.stop();
-        console.log("End speech recognition")
-      } else {
-        this.wordConcat()
-        this.recognition.start();
-      }
-    });
+    // this.recognition.addEventListener('end', (condition:any) => {
+    //   if (this.isStoppedSpeechRecog) {
+    //     this.recognition.stop();
+    //     console.log("End speech recognition")
+    //   } else {
+    //     this.wordConcat()
+    //     this.recognition.start();
+    //   }
+    // });
   }
   stop() {
     this.isStoppedSpeechRecog = true;
