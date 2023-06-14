@@ -42,7 +42,13 @@ export class HomeComponent {
     this.housingService.getAllHousingLocations().then((housingUserList: any[]) => {
       this.housingUserList = housingUserList;
       this.filteredUserList = housingUserList;
-      this.speechService.init()
+      if ('SpeechRecognition' in window || 'webkitSpeechRecognition' in window) {
+        this.speechService.init()
+        console.log("soportado")
+      }else{
+        console.log("no")
+      }
+      
     });
   }
   filterResults(text: string) {

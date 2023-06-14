@@ -1,7 +1,6 @@
 import { ChangeDetectorRef, Component, inject } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { HousingService } from '../housing.service';
-import { SpeechRecognitionService } from '../speech-recognition.service';
 
 declare var webkitSpeechRecognition: any;
 
@@ -37,14 +36,20 @@ export class CommentComponent {
   public text = '';
   tempWords = '';
   constructor(public cd: ChangeDetectorRef){
+    if ('SpeechRecognition' in window || 'webkitSpeechRecognition' in window) {
+      console.log("soportado")
+    } else {
+      console.log("no soportado")
+    
+    }
     this.init()
   }
   init() {
 
     this.recognition.interimResults = true;
     this.recognition.lang = 'es-PE';
-    this,this.recognition.continuous = true
-    
+    this.recognition.continuous = true
+    this.recognition.maxAlternatives = 4
     // this.recognition.addEventListener('result', (e:any) => {
     //   const transcript = Array.from(e.results)
     //     .map((result: any) => result[0])
@@ -54,12 +59,17 @@ export class CommentComponent {
     //   console.log(transcript);
     // });
     this.recognition.onresult = (e:any) => {
+      let res:any[] = []
       const transcript = Array.from(e.results)
-        .map((result: any) => result[0])
+        .map((result: any) => {
+          res = result
+          return result[0]
+        })
         .map((result) => result.transcript)
         .join('');
       this.tempWords = transcript
       this.updatesomething(this.tempWords)
+      console.log(e.results)
       console.log(transcript);
       console.log("------------");
       

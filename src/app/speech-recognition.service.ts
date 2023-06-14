@@ -7,19 +7,44 @@ declare var webkitSpeechRecognition: any;
 })
 export class SpeechRecognitionService {
 
-  recognition =  new webkitSpeechRecognition();
+  recognition: any
   isStoppedSpeechRecog = false;
   public text = '';
   tempWords = '';
 
-  constructor() { }
+  constructor() {
+    if ('SpeechRecognition' in window || 'webkitSpeechRecognition' in window) {
+      console.log("soportado")
+    } else {
+      console.log("no soportado")
+
+    }
+
+  }
 
   init() {
+    if ('SpeechRecognition' in window || 'webkitSpeechRecognition' in window) {
+      console.log("soportado")
+      this.recognition = new webkitSpeechRecognition()
+      this.recognition.interimResults = true;
+      this.recognition.lang = 'es-PE';
+      this.recognition.maxAlternatives = 5
+      this.recognition.onresult = (e: any) => {
+        let res: any[] = []
+        const transcript = Array.from(e.results)
+          .map((result: any) => {
+            res = result
+            return result[0]
+          })
+          .map((result) => result.transcript)
+          .join('');
+        console.log(res)
+        this.tempWords = transcript;
+        console.log(transcript);
+      }
+    }
 
-    this.recognition.interimResults = true;
-    this.recognition.lang = 'es-PE';
-    
-    
+
     // this.recognition.addEventListener('result', (e:any) => {
     //   const transcript = Array.from(e.results)
     //     .map((result: any) => result[0])
@@ -28,14 +53,7 @@ export class SpeechRecognitionService {
     //   this.tempWords = transcript;
     //   console.log(transcript);
     // });
-    this.recognition.onresult = (e:any) => {
-      const transcript = Array.from(e.results)
-        .map((result: any) => result[0])
-        .map((result) => result.transcript)
-        .join('');
-      this.tempWords = transcript;
-      console.log(transcript);
-    }
+
   }
 
   start() {
